@@ -5,18 +5,10 @@
   "description": "AI-powered task and project management system with chat and customer service",
   "packageManager": "npm@10.2.4",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write .",
-    "test": "turbo run test",
-    "clean": "turbo run clean",
-    "db:generate": "turbo run db:generate",
-    "db:push": "turbo run db:push",
-    "db:studio": "turbo run db:studio",
     "start": "react-scripts start",
-    "eject": "react-scripts eject",
-    "typecheck": "tsc --noEmit"
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -43,8 +35,6 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^3.0.0",
-    "turbo": "latest",
     "typescript": "^4.9.5"
   },
   "browserslist": {
