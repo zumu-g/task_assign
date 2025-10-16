@@ -1,0 +1,4 @@
+# Ignore files for Vercel builds
+node_modules
+.git
+*.log
