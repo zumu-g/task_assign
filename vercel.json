@@ -1,5 +1,23 @@
 {
-  "buildCommand": "npm --prefix apps/web install && npm --prefix apps/web run build",
-  "outputDirectory": "apps/web/.next",
-  "installCommand": "npm install"
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "zeroConfig": true
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "apps/web/$1"
+    }
+  ],
+  "functions": {
+    "apps/web/pages/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

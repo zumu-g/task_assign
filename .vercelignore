@@ -1,0 +1,9 @@
+# Ignore the API directory to prevent NestJS detection
+apps/api/
+packages/
+tools/
+.turbo/
+.githooks/
+*.log
+.env
+.env.local
