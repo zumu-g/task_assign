@@ -83,4 +83,18 @@ temp/
 *.sqlite
 
 # Prisma
-prisma/migrations/
+prisma/migrations/# Development files
+.env.*.local
+*.tmp
+*.temp
+# IDE files
+.vscode/settings.json
+# OS files
+# Security
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_dsa
+*.secret

@@ -1,0 +1,146 @@
+#!/bin/bash
+
+# FlowAI Commit Message Validator
+# Ensures commit messages follow best practices
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat $COMMIT_MSG_FILE)
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+print_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
+print_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+echo -e "${BLUE}🤖 FlowAI Git Agent: Validating commit message...${NC}"
+
+# Get the first line of the commit message
+FIRST_LINE=$(echo "$COMMIT_MSG" | head -n1)
+
+# Skip validation for merge commits
+if echo "$FIRST_LINE" | grep -q "^Merge "; then
+    print_info "Merge commit detected, skipping validation"
+    exit 0
+fi
+
+# Skip validation for revert commits
+if echo "$FIRST_LINE" | grep -q "^Revert "; then
+    print_info "Revert commit detected, skipping validation"
+    exit 0
+fi
+
+VALIDATION_FAILED=0
+
+# 1. Check length of first line (should be <= 72 characters)
+if [ ${#FIRST_LINE} -gt 72 ]; then
+    print_error "First line too long (${#FIRST_LINE} characters, max 72)"
+    VALIDATION_FAILED=1
+fi
+
+# 2. Check if first line is empty
+if [ -z "$FIRST_LINE" ]; then
+    print_error "Commit message cannot be empty"
+    VALIDATION_FAILED=1
+fi
+
+# 3. Check if first line starts with capital letter
+if ! echo "$FIRST_LINE" | grep -q "^[A-Z]"; then
+    print_warning "First line should start with a capital letter"
+fi
+
+# 4. Check if first line ends with period
+if echo "$FIRST_LINE" | grep -q "\.$"; then
+    print_warning "First line should not end with a period"
+fi
+
+# 5. Check for conventional commit format
+CONVENTIONAL_PATTERN="^(feat|fix|docs|style|refactor|test|chore|ci|build|perf)(\(.+\))?: .+"
+if echo "$FIRST_LINE" | grep -qE "$CONVENTIONAL_PATTERN"; then
+    print_success "Conventional commit format detected"
+else
+    print_warning "Consider using conventional commit format:"
+    print_info "  feat: add new feature"
+    print_info "  fix: bug fix"
+    print_info "  docs: documentation changes"
+    print_info "  style: formatting changes"
+    print_info "  refactor: code refactoring"
+    print_info "  test: add or update tests"
+    print_info "  chore: maintenance tasks"
+fi
+
+# 6. Check for prohibited words/patterns
+PROHIBITED_WORDS=("WIP" "wip" "temp" "temporary" "test commit" "asdf" "TODO" "FIXME")
+for word in "${PROHIBITED_WORDS[@]}"; do
+    if echo "$FIRST_LINE" | grep -qi "$word"; then
+        print_error "Prohibited word '$word' found in commit message"
+        VALIDATION_FAILED=1
+    fi
+done
+
+# 7. Check if commit message contains meaningful content
+if echo "$FIRST_LINE" | grep -qE "^(update|change|modify|fix)$"; then
+    print_error "Commit message too vague. Please be more specific about what was changed"
+    VALIDATION_FAILED=1
+fi
+
+# 8. Check for blank line between subject and body (if body exists)
+LINES=$(echo "$COMMIT_MSG" | wc -l)
+if [ $LINES -gt 1 ]; then
+    SECOND_LINE=$(echo "$COMMIT_MSG" | sed -n '2p')
+    if [ ! -z "$SECOND_LINE" ]; then
+        print_error "Second line must be blank when commit message has a body"
+        VALIDATION_FAILED=1
+    fi
+fi
+
+# 9. Check body line length (should be <= 72 characters)
+if [ $LINES -gt 2 ]; then
+    BODY_LINES=$(echo "$COMMIT_MSG" | tail -n +3)
+    while IFS= read -r line; do
+        if [ ${#line} -gt 72 ] && [ ! -z "$line" ]; then
+            print_warning "Body line too long (${#line} characters): $line"
+        fi
+    done <<< "$BODY_LINES"
+fi
+
+# 10. Provide helpful suggestions
+if [ $VALIDATION_FAILED -eq 0 ]; then
+    print_success "Commit message validation passed!"
+else
+    echo ""
+    print_error "Commit message validation failed!"
+    echo ""
+    print_info "Commit message format guidelines:"
+    echo "  • First line: 50-72 characters max"
+    echo "  • Start with capital letter"
+    echo "  • Don't end with period"
+    echo "  • Use imperative mood (Add, Fix, Update)"
+    echo "  • Blank line before body (if present)"
+    echo "  • Body lines: 72 characters max"
+    echo ""
+    print_info "Good examples:"
+    echo "  Add user authentication system"
+    echo "  Fix dashboard loading spinner issue"
+    echo "  Update README with installation instructions"
+    echo ""
+    exit 1
+fi
+
+exit 0
