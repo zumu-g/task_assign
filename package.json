@@ -4,10 +4,6 @@
   "version": "1.0.0",
   "description": "AI-powered task and project management system with chat and customer service",
   "packageManager": "npm@10.2.4",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
