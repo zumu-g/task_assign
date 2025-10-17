@@ -76,7 +76,7 @@ function taskReducer(state, action) {
         inboxItems: state.inboxItems.filter(item => item.id !== action.payload)
       };
     
-    case 'CREATE_TASK_FROM_INBOX':
+    case 'CREATE_TASK_FROM_INBOX': {
       const inboxItem = state.inboxItems.find(item => item.id === action.payload.inboxId);
       const newTask = {
         id: uuidv4(),
@@ -98,6 +98,7 @@ function taskReducer(state, action) {
         tasks: [...state.tasks, newTask],
         inboxItems: state.inboxItems.filter(item => item.id !== action.payload.inboxId)
       };
+    }
     
     case 'UPDATE_TASK':
       return {

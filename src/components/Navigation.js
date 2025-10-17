@@ -5,6 +5,7 @@ import {
   Inbox, 
   Layers,
   CheckSquare2,
+  Calendar,
   Settings,
   Menu,
   X
@@ -29,6 +30,13 @@ const Navigation = () => {
       path: '/canvas',
       icon: Layers,
       description: 'Visual task organization'
+    },
+    {
+      id: 'schedule',
+      name: 'Schedule',
+      path: '/schedule',
+      icon: Calendar,
+      description: 'Calendar and event management'
     },
     {
       id: 'tasks',
