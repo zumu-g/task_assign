@@ -95,8 +95,8 @@ const Inbox = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-pink-600" />
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900">Create Task with AI</h2>
@@ -330,22 +330,22 @@ const Inbox = () => {
           ))
         ) : (
           <div className="text-center py-12">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <InboxIcon className="w-10 h-10 text-blue-600" />
+            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <InboxIcon className="w-10 h-10 text-pink-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Your inbox is empty</h3>
             <p className="text-gray-500 mb-6">Start by adding ideas, notes, or tasks that come to mind</p>
             <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-blue-600" />
+                <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-pink-600" />
                 </div>
                 <span>AI-powered task creation</span>
               </div>
               <ArrowRight className="w-4 h-4" />
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-green-600" />
+                <div className="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-cyan-600" />
                 </div>
                 <span>Automatic SOP templates</span>
               </div>
