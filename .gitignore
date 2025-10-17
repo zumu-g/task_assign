@@ -98,3 +98,4 @@ prisma/migrations/# Development files
 id_rsa
 id_dsa
 *.secret
+flowai/
