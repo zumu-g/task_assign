@@ -77,10 +77,10 @@ const Canvas = () => {
     
     return (
       <div className="flex-1 min-w-80">
-        <div className={`rounded-xl p-4 ${column.color} mb-4`}>
+        <div className={`rounded-xl p-4 ${column.color} mb-4 border border-opacity-20`}>
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">{column.title}</h2>
-            <span className="bg-white px-2 py-1 rounded-lg text-sm font-medium text-gray-600">
+            <span className="bg-white px-3 py-1 rounded-full text-sm font-bold text-gray-700 shadow-sm min-w-[2rem] text-center">
               {columnTasks.length}
             </span>
           </div>
@@ -247,10 +247,10 @@ const Canvas = () => {
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('kanban')}
-                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-200 ${
                   viewMode === 'kanban' 
-                    ? 'bg-white text-gray-900 shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white text-gray-900 shadow-sm transform scale-105' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
                 aria-pressed={viewMode === 'kanban'}
               >
@@ -258,10 +258,10 @@ const Canvas = () => {
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-200 ${
                   viewMode === 'list' 
-                    ? 'bg-white text-gray-900 shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white text-gray-900 shadow-sm transform scale-105' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
                 aria-pressed={viewMode === 'list'}
               >

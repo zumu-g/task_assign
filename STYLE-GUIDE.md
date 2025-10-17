@@ -122,3 +122,153 @@ Use these variables throughout the application for consistency and easy theme up
 - **High**: `--color-error` (Red)
 
 This Pinterest-inspired palette creates a modern, vibrant, and engaging user experience while maintaining excellent accessibility and usability standards.
+
+## Advanced Design Patterns
+
+### Task Management Specific Patterns
+
+#### Priority Visualization
+- Use color intensity to indicate urgency
+- Implement subtle animations for high-priority items
+- Progressive color saturation based on due dates
+
+#### Status Flow Design
+```css
+/* Status progression visual indicators */
+.status-flow {
+  display: flex;
+  position: relative;
+}
+
+.status-flow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-text-tertiary) 0%, var(--color-success) 100%);
+  z-index: -1;
+}
+```
+
+#### Calendar Integration Colors
+- **Today**: Stronger primary color accent
+- **Past Due**: Red overlay with subtle animation
+- **Upcoming**: Gentle warm gradient
+- **Completed**: Soft green with checkmark overlay
+
+### Micro-Interactions
+
+#### Hover States
+```css
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(233, 30, 99, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+#### Loading States
+```css
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(233, 30, 99, 0.1), 
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+```
+
+### Data Visualization
+
+#### Progress Bars
+- Use gradient fills for visual appeal
+- Animate progress changes smoothly
+- Color-code based on completion percentage
+
+#### Chart Colors
+- **Completed Tasks**: `#10B981` (Success Green)
+- **In Progress**: `#06B6D4` (Accent Cyan)  
+- **Overdue**: `#EF4444` (Error Red)
+- **Upcoming**: `#8B5CF6` (Secondary Purple)
+
+### Layout Principles
+
+#### Information Hierarchy
+1. **Primary Actions**: Largest, primary color
+2. **Secondary Actions**: Medium, secondary color
+3. **Tertiary Actions**: Smallest, text color
+
+#### Spacing Scale
+```css
+/* Enhanced spacing system */
+--spacing-micro: 2px;   /* Fine details */
+--spacing-tiny: 4px;    /* Icon spacing */
+--spacing-xs: 8px;      /* Small gaps */
+--spacing-sm: 12px;     /* Component internal spacing */
+--spacing-md: 16px;     /* Default spacing */
+--spacing-lg: 24px;     /* Section spacing */
+--spacing-xl: 32px;     /* Major section spacing */
+--spacing-2xl: 48px;    /* Page section spacing */
+--spacing-3xl: 64px;    /* Hero spacing */
+```
+
+#### Responsive Breakpoints
+```css
+/* Mobile-first responsive design */
+--breakpoint-sm: 640px;   /* Small devices */
+--breakpoint-md: 768px;   /* Medium devices */
+--breakpoint-lg: 1024px;  /* Large devices */
+--breakpoint-xl: 1280px;  /* Extra large devices */
+```
+
+### Component Specifications
+
+#### Task Cards
+- **Border Radius**: 12px for modern feel
+- **Padding**: 16px internal, 8px external
+- **Shadow**: Subtle, increases on hover
+- **Max Width**: 400px for readability
+
+#### Navigation
+- **Height**: 64px desktop, 56px mobile
+- **Background**: Semi-transparent blur
+- **Active States**: Subtle background color
+- **Icons**: 20px with 8px padding
+
+#### Buttons
+- **Primary**: 44px min height for touch
+- **Secondary**: 40px height
+- **Compact**: 32px height
+- **Border Radius**: 8px standard, 6px compact
+
+### Dark Mode Support
+
+```css
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #111827;
+    --color-background-secondary: #1F2937;
+    --color-text-primary: #F9FAFB;
+    --color-text-secondary: #D1D5DB;
+    --color-border: #374151;
+  }
+}
+```
+
+### Animation Guidelines
+
+#### Timing Functions
+- **Standard**: `cubic-bezier(0.4, 0, 0.2, 1)` - Natural easing
+- **Decelerate**: `cubic-bezier(0, 0, 0.2, 1)` - Elements entering
+- **Accelerate**: `cubic-bezier(0.4, 0, 1, 1)` - Elements leaving
+
+#### Duration Standards
+- **Micro**: 150ms - Small state changes
+- **Standard**: 250ms - Most interactions
+- **Complex**: 350ms - Layout changes
+- **Page**: 500ms - Route transitions
+
+This enhanced style guide provides comprehensive guidance for building a world-class task management interface with modern design principles and excellent user experience.

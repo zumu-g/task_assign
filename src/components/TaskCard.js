@@ -32,7 +32,9 @@ const TaskCard = ({ task, teamMembers, onEdit, onDelete }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flow-card cursor-pointer group ${isDragging ? 'opacity-50' : ''}`}
+      className={`task-card-enhanced cursor-pointer group priority-indicator ${
+        task.priority === 'high' ? 'priority-high' : ''
+      } ${isDragging ? 'opacity-50' : ''}`}
       {...attributes}
     >
       {/* Drag Handle */}
@@ -108,18 +110,18 @@ const TaskCard = ({ task, teamMembers, onEdit, onDelete }) => {
           )}
         </div>
 
-        {/* Steps Progress */}
+        {/* Enhanced Steps Progress */}
         {task.steps && task.steps.length > 0 && (
           <div className="pt-2 border-t border-gray-100">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
               <span>Progress</span>
-              <span>
+              <span className="font-medium">
                 {task.steps.filter(step => step.completed).length} / {task.steps.length}
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-1.5">
+            <div className="progress-bar-enhanced">
               <div
-                className="bg-blue-500 h-1.5 rounded-full transition-all duration-300"
+                className="progress-fill-enhanced"
                 style={{
                   width: `${(task.steps.filter(step => step.completed).length / task.steps.length) * 100}%`
                 }}

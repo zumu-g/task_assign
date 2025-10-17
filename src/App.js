@@ -6,6 +6,7 @@ import { ViewProvider } from './contexts/ViewContext';
 import Navigation from './components/Navigation';
 import Inbox from './components/Inbox';
 import Canvas from './components/Canvas';
+import StyleShowcase from './components/StyleShowcase';
 import NotFound from './components/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
@@ -53,6 +54,7 @@ function App() {
                     <Route path="/inbox" element={<Inbox />} />
                     <Route path="/canvas" element={<Canvas />} />
                     <Route path="/tasks" element={<Navigate to="/canvas" replace />} />
+                    <Route path="/showcase" element={<StyleShowcase />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>

@@ -288,7 +288,7 @@ const Inbox = () => {
           />
           <button 
             onClick={handleAddItem}
-            className="btn-primary flex items-center space-x-2"
+            className="btn-primary-enhanced"
             disabled={!newItem.trim()}
           >
             <Plus className="w-5 h-5" />
@@ -312,11 +312,11 @@ const Inbox = () => {
                 <div className="flex items-center space-x-2 ml-4">
                   <button
                     onClick={() => handleProcessItem(item)}
-                    className="btn-primary flex items-center space-x-2"
+                    className={`btn-primary-enhanced ${isProcessing ? 'loading-shimmer' : ''}`}
                     disabled={isProcessing}
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>Process with AI</span>
+                    <span>{isProcessing ? 'Processing...' : 'Process with AI'}</span>
                   </button>
                   <button
                     onClick={() => removeInboxItem(item.id)}

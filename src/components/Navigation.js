@@ -36,6 +36,13 @@ const Navigation = () => {
       path: '/tasks',
       icon: CheckSquare2,
       description: 'Task management and tracking'
+    },
+    {
+      id: 'showcase',
+      name: 'Showcase',
+      path: '/showcase',
+      icon: Settings,
+      description: 'Design system showcase'
     }
   ];
 
