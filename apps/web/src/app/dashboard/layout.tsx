@@ -49,41 +49,41 @@ export default function DashboardLayout({
             </a>
           </div>
 
-          <div className="pt-4 space-y-1">
-            <div className="px-3 py-2 text-sm font-medium text-gray-300">Bookmarks</div>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+          <div className="pt-4 space-y-2">
+            <div className="px-4 py-2 text-sm font-medium text-gray-400">Bookmarks</div>
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3">📂</span>
               Add Bookmark
             </a>
           </div>
 
-          <div className="pt-4 space-y-1">
-            <div className="px-3 py-2 text-sm font-medium text-gray-300">Lists</div>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+          <div className="pt-4 space-y-2">
+            <div className="px-4 py-2 text-sm font-medium text-gray-400">Lists</div>
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3 w-2 h-2 bg-orange-500 rounded-full"></span>
               Get started with Upbase
             </a>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3">📋</span>
               SQ work
             </a>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3">🏠</span>
               SQ home
             </a>
           </div>
 
-          <div className="pt-4 space-y-1">
-            <div className="px-3 py-2 text-sm font-medium text-gray-300">Filters</div>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+          <div className="pt-4 space-y-2">
+            <div className="px-4 py-2 text-sm font-medium text-gray-400">Filters</div>
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3">🔍</span>
               Add filter
             </a>
           </div>
 
-          <div className="pt-4 space-y-1">
-            <div className="px-3 py-2 text-sm font-medium text-gray-300">Tags</div>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+          <div className="pt-4 space-y-2">
+            <div className="px-4 py-2 text-sm font-medium text-gray-400">Tags</div>
+            <a href="#" className="flex items-center px-4 py-2 ml-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/40 rounded-lg transition-all duration-200">
               <span className="mr-3">🏷️</span>
               Add tag
             </a>
