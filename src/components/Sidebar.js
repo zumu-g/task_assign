@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, onToggle, currentView, onViewChange }) => {
       isOpen ? 'w-64' : 'w-16'
     }`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex items-center justify-between p-6 border-b border-gray-200">
         {isOpen && (
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, onToggle, currentView, onViewChange }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="p-2 space-y-1">
+      <nav className="p-4 space-y-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -54,7 +54,7 @@ const Sidebar = ({ isOpen, onToggle, currentView, onViewChange }) => {
               key={item.id}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-3 py-3 rounded-xl transition-all duration-200 group ${
+                `flex items-center space-x-3 px-4 py-4 rounded-xl transition-all duration-200 group ${
                   isActive
                     ? 'bg-blue-50 text-blue-600 border border-blue-200'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -77,13 +77,13 @@ const Sidebar = ({ isOpen, onToggle, currentView, onViewChange }) => {
 
       {/* Footer */}
       {isOpen && (
-        <div className="absolute bottom-4 left-4 right-4">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-100">
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
             <h3 className="font-semibold text-sm text-gray-900 mb-1">AI Assistant</h3>
-            <p className="text-xs text-gray-600 mb-3">
+            <p className="text-xs text-gray-600 mb-4">
               Let AI help you create and organize tasks automatically
             </p>
-            <button className="btn-primary w-full text-xs py-2">
+            <button className="btn-primary w-full text-xs py-3">
               Try AI Features
             </button>
           </div>

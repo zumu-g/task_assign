@@ -93,8 +93,8 @@ const Navigation = () => {
     <>
       {/* Desktop Navigation */}
       <nav className="hidden md:flex bg-white border-b border-gray-200" role="navigation" aria-label="Main navigation">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+          <div className="flex justify-between h-20">
             {/* Logo */}
             <div className="flex items-center space-x-8">
               <Link 
@@ -133,8 +133,8 @@ const Navigation = () => {
 
       {/* Mobile Navigation */}
       <nav className="md:hidden bg-white border-b border-gray-200" role="navigation" aria-label="Mobile navigation">
-        <div className="px-4 sm:px-6">
-          <div className="flex justify-between items-center h-16">
+        <div className="px-6">
+          <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link 
               to="/" 
@@ -168,7 +168,7 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div 
             id="mobile-menu" 
-            className="px-4 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200"
+            className="px-6 pt-4 pb-6 space-y-2 bg-white border-t border-gray-200"
             role="menu"
           >
             {navigationItems.map((item) => (

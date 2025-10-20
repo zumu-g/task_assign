@@ -59,6 +59,18 @@
   --spacing-xl: 32px;     /* Major section spacing */
   --spacing-2xl: 48px;    /* Page section spacing */
   --spacing-3xl: 64px;    /* Hero spacing */
+  --spacing-4xl: 80px;    /* Large page sections */
+  --spacing-5xl: 96px;    /* Extra large sections */
+
+  /* Consistent Container Padding */
+  --container-padding-sm: 24px;  /* 6 * 4px */
+  --container-padding-md: 32px;  /* 8 * 4px */
+  --container-padding-lg: 40px;  /* 10 * 4px */
+  
+  /* Consistent Grid Gaps */
+  --grid-gap-sm: 24px;
+  --grid-gap-md: 32px;
+  --grid-gap-lg: 40px;
 
   /* Responsive Breakpoints */
   --breakpoint-sm: 640px;   /* Small devices */
@@ -256,7 +268,7 @@ body {
   background: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
 }
@@ -761,7 +773,7 @@ body {
   background: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
 }
@@ -804,6 +816,57 @@ body {
 }
 
 /* FlowAI Utility Classes */
+
+/* Consistent Spacing Utilities */
+.space-section {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.space-section-sm {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.space-content {
+  margin-bottom: var(--spacing-xl);
+}
+
+.space-content-sm {
+  margin-bottom: var(--spacing-lg);
+}
+
+.space-element {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Container Padding Utilities */
+.container-padding {
+  padding-left: var(--container-padding-md);
+  padding-right: var(--container-padding-md);
+}
+
+.container-padding-sm {
+  padding-left: var(--container-padding-sm);
+  padding-right: var(--container-padding-sm);
+}
+
+.container-padding-lg {
+  padding-left: var(--container-padding-lg);
+  padding-right: var(--container-padding-lg);
+}
+
+/* Grid Gap Utilities */
+.grid-gap {
+  gap: var(--grid-gap-md);
+}
+
+.grid-gap-sm {
+  gap: var(--grid-gap-sm);
+}
+
+.grid-gap-lg {
+  gap: var(--grid-gap-lg);
+}
+
 .ai-processing {
   position: relative;
   overflow: hidden;

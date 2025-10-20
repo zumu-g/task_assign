@@ -68,15 +68,15 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="px-4 py-6 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="px-6 py-8 sm:px-8 lg:px-10 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-10">
+      <div className="mb-12">
         <h1 className="text-title">Good morning! 👋</h1>
         <p className="text-body">Here's what's happening with your projects today.</p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
         <StatCard
           title="Total Tasks"
           value={taskStats.total}
@@ -109,9 +109,9 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="apple-card p-6 mb-10">
-        <h2 className="text-subtitle mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+      <div className="apple-card p-8 mb-12">
+        <h2 className="text-subtitle mb-8">Quick Actions</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           <QuickActionButton
             icon={Plus}
             label="New Task"
@@ -135,10 +135,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Tasks */}
-        <div className="apple-card p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="apple-card p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-subtitle">Recent Tasks</h2>
             <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
               View All
@@ -177,8 +177,8 @@ const Dashboard = () => {
         </div>
 
         {/* Upcoming Deadlines */}
-        <div className="apple-card p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="apple-card p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-subtitle">Upcoming Deadlines</h2>
             <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
               View Calendar
@@ -218,8 +218,8 @@ const Dashboard = () => {
 
       {/* Inbox Preview */}
       {inboxItems.length > 0 && (
-        <div className="apple-card p-6 mt-10">
-          <div className="flex items-center justify-between mb-6">
+        <div className="apple-card p-8 mt-12">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-subtitle">Inbox ({inboxItems.length})</h2>
             <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
               Process All
