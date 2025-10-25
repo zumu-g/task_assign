@@ -1,3 +1,5 @@
+import { CheckCircle } from 'lucide-react';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8">
@@ -53,8 +55,9 @@ export default function Home() {
 
         {/* Status */}
         <div className="mt-8 sm:mt-12 text-center">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            ✓ Phase 1 Complete
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <CheckCircle className="w-3.5 h-3.5" />
+            Phase 1 Complete
           </span>
           <p className="text-xs text-gray-400 mt-2">
             Modern TypeScript monorepo with Next.js & NestJS
