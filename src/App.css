@@ -65,7 +65,7 @@
   /* Consistent Container Padding */
   --container-padding-sm: 24px;  /* 6 * 4px */
   --container-padding-md: 32px;  /* 8 * 4px */
-  --container-padding-lg: 40px;  /* 10 * 4px */
+  --container-padding-lg: 48px;  /* 12 * 4px - Apple recommended spacing */
   
   /* Consistent Grid Gaps */
   --grid-gap-sm: 24px;
@@ -865,6 +865,66 @@ body {
 
 .grid-gap-lg {
   gap: var(--grid-gap-lg);
+}
+
+/* Apple-Compliant Layout Utilities */
+.container-padding-lg {
+  padding-left: var(--container-padding-lg);
+  padding-right: var(--container-padding-lg);
+}
+
+/* Apple-style content constraints */
+.content-max-width {
+  max-width: 1200px; /* Optimized for readability */
+  margin: 0 auto;
+}
+
+/* Enhanced white space management */
+.space-section {
+  margin-bottom: var(--spacing-4xl); /* 80px for major sections */
+}
+
+.space-section-sm {
+  margin-bottom: var(--spacing-3xl); /* 64px for medium sections */
+}
+
+/* Apple-inspired text improvements */
+.text-lg {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+}
+
+/* Enhanced touch targets */
+.apple-input.text-lg {
+  font-size: var(--font-size-lg);
+  padding: var(--spacing-lg);
+  line-height: var(--line-height-normal);
+}
+
+/* Better visual hierarchy */
+.text-title {
+  font-size: 3rem; /* Larger, more prominent */
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: -0.02em; /* Apple-style tight tracking */
+}
+
+/* Improved button sizing for touch */
+.btn-primary-enhanced.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.btn-primary-enhanced.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Enhanced card spacing */
+.apple-card.p-8 {
+  padding: var(--spacing-2xl); /* 48px for generous spacing */
 }
 
 .ai-processing {

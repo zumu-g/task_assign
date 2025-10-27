@@ -268,84 +268,88 @@ const Inbox = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="container-padding-lg max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-title">Inbox</h1>
-        <p className="text-body">Capture ideas and quickly turn them into organized tasks with AI assistance</p>
+      <div className="space-section">
+        <div className="text-center max-w-2xl mx-auto">
+          <h1 className="text-title mb-6">Inbox</h1>
+          <p className="text-body text-lg leading-relaxed">Capture ideas and quickly turn them into organized tasks with AI assistance</p>
+        </div>
       </div>
 
       {/* Add New Item */}
-      <div className="apple-card mb-6">
-        <div className="flex space-x-3">
-          <input
-            type="text"
-            value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleAddItem()}
-            placeholder="What's on your mind? Add anything that comes up..."
-            className="apple-input flex-1"
-          />
-          <button 
-            onClick={handleAddItem}
-            className="btn-primary-enhanced"
-            disabled={!newItem.trim()}
-          >
-            <Plus className="w-5 h-5" />
-            <span>Add</span>
-          </button>
+      <div className="space-section-sm">
+        <div className="apple-card p-8">
+          <div className="flex space-x-4">
+            <input
+              type="text"
+              value={newItem}
+              onChange={(e) => setNewItem(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddItem()}
+              placeholder="What's on your mind? Add anything that comes up..."
+              className="apple-input flex-1 text-lg py-4"
+            />
+            <button 
+              onClick={handleAddItem}
+              className="btn-primary-enhanced px-8 py-4 text-lg"
+              disabled={!newItem.trim()}
+            >
+              <Plus className="w-6 h-6" />
+              <span>Add</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Inbox Items */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {inboxItems.length > 0 ? (
           inboxItems.map(item => (
-            <div key={item.id} className="apple-card">
+            <div key={item.id} className="apple-card p-8">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-gray-900 mb-2">{item.content}</p>
+                  <p className="text-gray-900 mb-4 text-lg leading-relaxed">{item.content}</p>
                   <p className="text-sm text-gray-500">
                     Added {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex items-center space-x-2 ml-4">
+                <div className="flex items-center space-x-3 ml-6">
                   <button
                     onClick={() => handleProcessItem(item)}
-                    className={`btn-primary-enhanced ${isProcessing ? 'loading-shimmer' : ''}`}
+                    className={`btn-primary-enhanced px-6 py-3 ${isProcessing ? 'loading-shimmer' : ''}`}
                     disabled={isProcessing}
                   >
-                    <Sparkles className="w-4 h-4" />
-                    <span>{isProcessing ? 'Processing...' : 'Process with AI'}</span>
+                    <Sparkles className="w-5 h-5" />
+                    <span className="text-base">{isProcessing ? 'Processing...' : 'Process with AI'}</span>
                   </button>
                   <button
                     onClick={() => removeInboxItem(item.id)}
-                    className="text-gray-400 hover:text-red-600 p-2"
+                    className="text-gray-400 hover:text-red-600 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center py-12">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <InboxIcon className="w-10 h-10 text-pink-600" />
+          <div className="text-center py-24">
+            <div className="w-24 h-24 bg-gradient-to-br from-pink-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-8">
+              <InboxIcon className="w-12 h-12 text-pink-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Your inbox is empty</h3>
-            <p className="text-gray-500 mb-6">Start by adding ideas, notes, or tasks that come to mind</p>
-            <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-pink-600" />
+            <h3 className="text-2xl font-semibold text-gray-900 mb-4">Your inbox is empty</h3>
+            <p className="text-gray-500 text-lg mb-12 max-w-md mx-auto leading-relaxed">Start by adding ideas, notes, or tasks that come to mind</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-6 sm:space-y-0 sm:space-x-8 text-base text-gray-600">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-pink-600" />
                 </div>
                 <span>AI-powered task creation</span>
               </div>
-              <ArrowRight className="w-4 h-4" />
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-cyan-600" />
+              <ArrowRight className="w-5 h-5 hidden sm:block" />
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-cyan-600" />
                 </div>
                 <span>Automatic SOP templates</span>
               </div>

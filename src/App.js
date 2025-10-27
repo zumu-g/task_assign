@@ -26,7 +26,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="text-center">
           <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl font-bold text-white">F</span>
@@ -46,10 +46,10 @@ function App() {
       <ViewProvider>
         <TaskProvider>
           <InboxProvider>
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-white">
               <Router>
                 <Navigation />
-                <main className="max-w-7xl mx-auto px-6 py-8 sm:px-8 lg:px-10">
+                <main className="pt-12 pb-24">
                   <Routes>
                     <Route path="/" element={<Navigate to="/inbox" replace />} />
                     <Route path="/inbox" element={<Inbox />} />
