@@ -70,7 +70,7 @@ const Dashboard = () => {
       {/* Header */}
       <div className="text-center space-section">
         <h1 className="text-title mb-4">Dashboard</h1>
-        <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Track your productivity and team performance at a glance</p>
+        <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Track your productivity and team performance</p>
       </div>
 
       {/* Essential Metrics */}
