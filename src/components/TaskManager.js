@@ -1,332 +1,296 @@
 import React, { useState } from 'react';
 import { useTask } from '../contexts/TaskContext';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { 
+  DndContext, 
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  restrictToVerticalAxis,
+  restrictToParentElement,
+} from '@dnd-kit/modifiers';
 import { 
   Plus, 
   Filter, 
-  Search, 
-  MoreHorizontal, 
+  Search,
   Calendar,
   User,
   Flag,
+  MoreHorizontal,
+  Edit3,
+  Trash2,
   List,
-  Grid,
-  Clock
+  Grid3X3
 } from 'lucide-react';
+import TaskCard from './TaskCard';
 
 const TaskManager = () => {
-  const { tasks, updateTask, viewMode, setViewMode, teamMembers } = useTask();
+  const { tasks, updateTask, deleteTask, viewMode, setViewMode, teamMembers } = useTask();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
   const [filterPriority, setFilterPriority] = useState('all');
-  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [filterAssignee, setFilterAssignee] = useState('all');
+  const [selectedTask, setSelectedTask] = useState(null);
 
-  const statuses = [
-    { id: 'todo', name: 'To Do', color: 'bg-gray-100 text-gray-700' },
-    { id: 'in_progress', name: 'In Progress', color: 'bg-blue-100 text-blue-700' },
-    { id: 'review', name: 'Review', color: 'bg-orange-100 text-orange-700' },
-    { id: 'done', name: 'Done', color: 'bg-green-100 text-green-700' }
-  ];
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-  const priorities = [
-    { id: 'low', name: 'Low', color: 'bg-green-500' },
-    { id: 'medium', name: 'Medium', color: 'bg-orange-500' },
-    { id: 'high', name: 'High', color: 'bg-red-500' }
+  const columns = [
+    { id: 'todo', title: 'To Do', color: 'bg-gray-100' },
+    { id: 'in_progress', title: 'In Progress', color: 'bg-blue-100' },
+    { id: 'in_review', title: 'In Review', color: 'bg-yellow-100' },
+    { id: 'done', title: 'Done', color: 'bg-green-100' }
   ];
 
   const filteredTasks = tasks.filter(task => {
     const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         task.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
+                         task.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;
+    const matchesAssignee = filterAssignee === 'all' || task.assignee === filterAssignee;
     
-    return matchesSearch && matchesStatus && matchesPriority;
+    return matchesSearch && matchesPriority && matchesAssignee;
   });
 
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const { source, destination, draggableId } = result;
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
     
-    if (source.droppableId !== destination.droppableId) {
-      updateTask(draggableId, { status: destination.droppableId });
+    if (!over) return;
+    
+    const activeTask = tasks.find(task => task.id === active.id);
+    const overColumn = over.id;
+    
+    if (activeTask && activeTask.status !== overColumn) {
+      updateTask(activeTask.id, { status: overColumn });
     }
   };
 
-  const TaskCard = ({ task, index }) => {
-    const assignee = teamMembers.find(member => member.id === task.assignee);
-    const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'done';
+  const KanbanColumn = ({ column }) => {
+    const columnTasks = filteredTasks.filter(task => task.status === column.id);
     
     return (
-      <Draggable draggableId={task.id} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            className={`apple-card mb-3 cursor-pointer transition-all duration-200 ${
-              snapshot.isDragging ? 'transform rotate-3 shadow-2xl' : 'hover:shadow-lg'
-            } ${isOverdue ? 'border-l-4 border-red-500' : ''}`}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <h3 className="font-semibold text-gray-900 text-sm flex-1">{task.title}</h3>
-              <button className="text-gray-400 hover:text-gray-600">
-                <MoreHorizontal className="w-4 h-4" />
-              </button>
-            </div>
+      <div className="apple-card p-6 min-h-[600px]">
+        <div className={`rounded-xl p-4 ${column.color} mb-6 border border-opacity-20`}>
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-gray-900 text-lg">{column.title}</h2>
+            <span className="bg-white px-3 py-1 rounded-full text-sm font-bold text-gray-700 shadow-sm min-w-[2rem] text-center">
+              {columnTasks.length}
+            </span>
+          </div>
+        </div>
+        
+        <SortableContext 
+          items={columnTasks.map(task => task.id)} 
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="space-y-4 min-h-64">
+            {columnTasks.map(task => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                teamMembers={teamMembers}
+                onEdit={() => setSelectedTask(task)}
+                onDelete={() => deleteTask(task.id)}
+              />
+            ))}
             
-            {task.description && (
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">{task.description}</p>
-            )}
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span className={`px-2 py-1 rounded-md text-xs font-medium ${
-                  priorities.find(p => p.id === task.priority)?.color || 'bg-gray-500'
-                } text-white`}>
-                  {task.priority}
-                </span>
-                
-                {task.dueDate && (
-                  <div className={`flex items-center space-x-1 text-xs ${
-                    isOverdue ? 'text-red-600' : 'text-gray-500'
-                  }`}>
-                    <Calendar className="w-3 h-3" />
-                    <span>{new Date(task.dueDate).toLocaleDateString()}</span>
-                  </div>
-                )}
-              </div>
-              
-              {assignee && (
-                <div className="flex items-center space-x-1">
-                  <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-medium text-white">
-                      {assignee.name.charAt(0)}
-                    </span>
-                  </div>
+            {columnTasks.length === 0 && (
+              <div className="text-center py-12 text-gray-400">
+                <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Plus className="w-8 h-8" />
                 </div>
-              )}
-            </div>
-            
-            {task.steps && task.steps.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-gray-100">
-                <div className="flex items-center space-x-2">
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ 
-                        width: `${(task.steps.filter(s => s.completed).length / task.steps.length) * 100}%` 
-                      }}
-                    />
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    {task.steps.filter(s => s.completed).length}/{task.steps.length}
-                  </span>
-                </div>
+                <p className="text-base">No tasks</p>
               </div>
             )}
           </div>
-        )}
-      </Draggable>
+        </SortableContext>
+      </div>
     );
   };
 
-  const KanbanView = () => (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statuses.map(status => {
-          const statusTasks = filteredTasks.filter(task => task.status === status.id);
-          
-          return (
-            <div key={status.id} className="bg-gray-50 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-semibold text-gray-900">{status.name}</h3>
-                  <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">
-                    {statusTasks.length}
-                  </span>
-                </div>
-                <button className="text-gray-400 hover:text-gray-600">
-                  <Plus className="w-4 h-4" />
-                </button>
+  const ListView = () => (
+    <div className="space-y-4">
+      {filteredTasks.map(task => (
+        <div key={task.id} className="apple-card p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4 flex-1">
+              <div className={`w-4 h-4 rounded-full ${
+                task.status === 'done' ? 'bg-green-500' :
+                task.status === 'in_progress' ? 'bg-blue-500' :
+                task.status === 'in_review' ? 'bg-yellow-500' :
+                'bg-gray-400'
+              }`} />
+              
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-900 text-base mb-1">{task.title}</h3>
+                <p className="text-sm text-gray-500 line-clamp-1">{task.description}</p>
               </div>
               
-              <Droppable droppableId={status.id}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={`min-h-32 transition-colors duration-200 ${
-                      snapshot.isDraggingOver ? 'bg-blue-50 rounded-lg' : ''
-                    }`}
-                  >
-                    {statusTasks.map((task, index) => (
-                      <TaskCard key={task.id} task={task} index={index} />
-                    ))}
-                    {provided.placeholder}
+              <div className="flex items-center space-x-4">
+                <span className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
+                  task.priority === 'high' ? 'bg-red-100 text-red-700' :
+                  task.priority === 'medium' ? 'bg-orange-100 text-orange-700' :
+                  'bg-green-100 text-green-700'
+                }`}>
+                  {task.priority}
+                </span>
+                
+                {task.assignee && (
+                  <div className="flex items-center space-x-2">
+                    <User className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      {teamMembers.find(m => m.id === task.assignee)?.name}
+                    </span>
                   </div>
                 )}
-              </Droppable>
-            </div>
-          );
-        })}
-      </div>
-    </DragDropContext>
-  );
-
-  const ListView = () => (
-    <div className="apple-card">
-      <div className="space-y-2">
-        {filteredTasks.length > 0 ? (
-          filteredTasks.map(task => {
-            const assignee = teamMembers.find(member => member.id === task.assignee);
-            const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'done';
-            
-            return (
-              <div key={task.id} className={`flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors ${
-                isOverdue ? 'border-l-4 border-red-500' : ''
-              }`}>
-                <div className={`w-3 h-3 rounded-full ${
-                  task.status === 'done' ? 'bg-green-500' :
-                  task.status === 'in_progress' ? 'bg-blue-500' : 'bg-gray-400'
-                }`} />
                 
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">{task.title}</h3>
-                  {task.description && (
-                    <p className="text-gray-600 text-sm mt-1 line-clamp-1">{task.description}</p>
-                  )}
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <span className={`px-2 py-1 rounded-md text-xs font-medium ${
-                    priorities.find(p => p.id === task.priority)?.color || 'bg-gray-500'
-                  } text-white`}>
-                    {task.priority}
-                  </span>
-                  
-                  {task.dueDate && (
-                    <div className={`flex items-center space-x-1 text-sm ${
-                      isOverdue ? 'text-red-600' : 'text-gray-500'
-                    }`}>
-                      <Calendar className="w-4 h-4" />
-                      <span>{new Date(task.dueDate).toLocaleDateString()}</span>
-                    </div>
-                  )}
-                  
-                  {assignee && (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-white">
-                          {assignee.name.charAt(0)}
-                        </span>
-                      </div>
-                      <span className="text-sm text-gray-600">{assignee.name}</span>
-                    </div>
-                  )}
-                  
-                  <select 
-                    value={task.status}
-                    onChange={(e) => updateTask(task.id, { status: e.target.value })}
-                    className="apple-input text-sm py-1 px-2"
-                  >
-                    {statuses.map(status => (
-                      <option key={status.id} value={status.id}>{status.name}</option>
-                    ))}
-                  </select>
-                </div>
+                {task.dueDate && (
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      {new Date(task.dueDate).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
               </div>
-            );
-          })
-        ) : (
-          <div className="text-center py-12">
-            <List className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No tasks found</h3>
-            <p className="text-gray-500">Try adjusting your filters or create a new task</p>
+            </div>
+            
+            <div className="flex items-center space-x-2 ml-4">
+              <button
+                onClick={() => setSelectedTask(task)}
+                className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={`Edit task: ${task.title}`}
+              >
+                <Edit3 className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => deleteTask(task.id)}
+                className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={`Delete task: ${task.title}`}
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      ))}
+      
+      {filteredTasks.length === 0 && (
+        <div className="text-center py-16">
+          <div className="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <Search className="w-10 h-10 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-medium text-gray-900 mb-2">No tasks found</h3>
+          <p className="text-gray-500 text-lg">Try adjusting your search or filter criteria</p>
+        </div>
+      )}
     </div>
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="container-padding-lg max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-title">Tasks</h1>
-          <p className="text-body">Manage your team's work and track progress</p>
-        </div>
-        <button 
-          onClick={() => setShowNewTaskModal(true)}
-          className="btn-primary flex items-center space-x-2"
-        >
-          <Plus className="w-5 h-5" />
-          <span>New Task</span>
-        </button>
+      <div className="text-center space-section">
+        <h1 className="text-title mb-4">My Tasks</h1>
+        <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Organize and track your tasks with powerful views and filters</p>
       </div>
 
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search tasks..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="apple-input pl-10"
-          />
-        </div>
-
-        {/* Filters and View Mode */}
-        <div className="flex items-center space-x-3">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="apple-input"
-          >
-            <option value="all">All Status</option>
-            {statuses.map(status => (
-              <option key={status.id} value={status.id}>{status.name}</option>
-            ))}
-          </select>
-
-          <select
-            value={filterPriority}
-            onChange={(e) => setFilterPriority(e.target.value)}
-            className="apple-input"
-          >
-            <option value="all">All Priority</option>
-            {priorities.map(priority => (
-              <option key={priority.id} value={priority.id}>{priority.name}</option>
-            ))}
-          </select>
-
-          <div className="flex items-center bg-gray-100 rounded-xl p-1">
-            <button
-              onClick={() => setViewMode('kanban')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'kanban' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600'
-              }`}
+      <div className="apple-card p-8 space-section-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-6 lg:space-y-0">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="apple-input pl-12 text-base py-4"
+              aria-label="Search tasks"
+            />
+          </div>
+          
+          {/* Filters and View Toggle */}
+          <div className="flex items-center space-x-4">
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              className="apple-input px-4 py-3 min-h-[44px]"
+              aria-label="Filter by priority"
             >
-              <Grid className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'list' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600'
-              }`}
+              <option value="all">All Priorities</option>
+              <option value="high">High Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="low">Low Priority</option>
+            </select>
+            
+            <select
+              value={filterAssignee}
+              onChange={(e) => setFilterAssignee(e.target.value)}
+              className="apple-input px-4 py-3 min-h-[44px]"
+              aria-label="Filter by assignee"
             >
-              <List className="w-4 h-4" />
-            </button>
+              <option value="all">All Assignees</option>
+              {teamMembers.map(member => (
+                <option key={member.id} value={member.id}>{member.name}</option>
+              ))}
+            </select>
+            
+            {/* View Toggle */}
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('kanban')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors min-h-[44px] ${
+                  viewMode === 'kanban' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                }`}
+                aria-label="Kanban view"
+              >
+                <Grid3X3 className="w-5 h-5" />
+                <span className="text-sm font-medium">Board</span>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors min-h-[44px] ${
+                  viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                }`}
+                aria-label="List view"
+              >
+                <List className="w-5 h-5" />
+                <span className="text-sm font-medium">List</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Tasks View */}
-      {viewMode === 'kanban' ? <KanbanView /> : <ListView />}
+      {/* Task Views */}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+      >
+        {viewMode === 'kanban' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {columns.map(column => (
+              <KanbanColumn key={column.id} column={column} />
+            ))}
+          </div>
+        ) : (
+          <ListView />
+        )}
+      </DndContext>
     </div>
   );
 };
