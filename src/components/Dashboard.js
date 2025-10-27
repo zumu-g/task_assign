@@ -37,18 +37,16 @@ const Dashboard = () => {
     .slice(0, 4);
 
   const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
-    <div className="apple-card p-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${color}`}>
-            <Icon className="w-8 h-8 text-white" />
-          </div>
-          <h3 className="text-3xl font-bold text-gray-900 mb-2">{value}</h3>
-          <p className="text-sm font-medium text-gray-600 mb-2">{title}</p>
-          {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+    <div className="apple-card p-8">
+      <div className="text-center">
+        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 ${color}`}>
+          <Icon className="w-10 h-10 text-white" />
         </div>
+        <p className="text-base font-medium text-gray-600 mb-3">{title}</p>
+        <h3 className="text-4xl font-bold text-gray-900 mb-3">{value}</h3>
+        {subtitle && <p className="text-sm text-gray-500 mb-2">{subtitle}</p>}
         {trend && (
-          <div className="flex items-center space-x-1 text-green-600">
+          <div className="flex items-center justify-center space-x-2 text-green-600">
             <TrendingUp className="w-5 h-5" />
             <span className="text-sm font-medium">{trend}</span>
           </div>
@@ -68,174 +66,165 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="px-6 py-8 sm:px-8 lg:px-10 max-w-7xl mx-auto">
+    <div className="container-padding-lg max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-12">
-        <h1 className="text-title">Good morning! 👋</h1>
-        <p className="text-body">Here's what's happening with your projects today.</p>
+      <div className="text-center space-section">
+        <h1 className="text-title mb-4">Dashboard</h1>
+        <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Track your productivity and team performance at a glance</p>
       </div>
 
-      {/* Stats Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+      {/* Essential Metrics - Reduced from 4 to 3 */}
+      <div className="grid grid-cols-1 md:grid-cols-3 grid-gap-lg space-section-sm">
         <StatCard
-          title="Total Tasks"
-          value={taskStats.total}
-          subtitle={`${taskStats.completed} completed`}
-          icon={CheckSquare}
-          color="bg-blue-500"
-          trend="+12%"
-        />
-        <StatCard
-          title="In Progress"
+          title="Active Tasks"
           value={taskStats.inProgress}
-          subtitle="Active tasks"
+          subtitle={`${taskStats.total} total tasks`}
           icon={Clock}
-          color="bg-orange-500"
+          color="bg-blue-500"
+          trend={taskStats.inProgress > 0 ? "+" + Math.round((taskStats.inProgress / taskStats.total) * 100) + "%" : null}
         />
         <StatCard
-          title="Support Tickets"
-          value={ticketStats.open}
-          subtitle={`${ticketStats.total} total`}
-          icon={AlertCircle}
-          color="bg-red-500"
-        />
-        <StatCard
-          title="Team Messages"
-          value={Object.values(messages).flat().length}
-          subtitle={`${channels.length} channels`}
-          icon={MessageSquare}
+          title="Completed Today"
+          value={taskStats.completed}
+          subtitle="Great progress!"
+          icon={CheckSquare}
           color="bg-green-500"
         />
+        <StatCard
+          title="Due Soon"
+          value={upcomingDeadlines.length}
+          subtitle="Need attention"
+          icon={AlertCircle}
+          color={upcomingDeadlines.length > 2 ? "bg-red-500" : "bg-orange-500"}
+        />
       </div>
 
-      {/* Quick Actions */}
-      <div className="apple-card p-8 mb-12">
-        <h2 className="text-subtitle mb-8">Quick Actions</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      {/* Quick Actions - Reduced to 3 primary actions */}
+      <div className="apple-card p-8 space-section-sm">
+        <h2 className="text-subtitle text-center mb-8">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
           <QuickActionButton
             icon={Plus}
             label="New Task"
             color="bg-blue-500"
           />
           <QuickActionButton
-            icon={MessageSquare}
-            label="Start Chat"
-            color="bg-green-500"
-          />
-          <QuickActionButton
-            icon={AlertCircle}
-            label="Create Ticket"
-            color="bg-red-500"
-          />
-          <QuickActionButton
             icon={Calendar}
             label="Schedule"
             color="bg-purple-500"
           />
+          <QuickActionButton
+            icon={MessageSquare}
+            label="Team Chat"
+            color="bg-green-500"
+          />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Tasks */}
-        <div className="apple-card p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-subtitle">Recent Tasks</h2>
-            <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
-              View All
-            </button>
-          </div>
-          <div className="space-y-4">
-            {recentTasks.length > 0 ? (
-              recentTasks.map(task => (
-                <div key={task.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                  <div className={`w-4 h-4 rounded-full ${
-                    task.status === 'done' ? 'bg-green-500' :
-                    task.status === 'in_progress' ? 'bg-blue-500' : 'bg-gray-400'
-                  }`} />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 text-sm leading-5">{task.title}</h3>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {task.assignee && teamMembers.find(m => m.id === task.assignee)?.name}
-                    </p>
-                  </div>
-                  <span className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
-                    task.priority === 'high' ? 'bg-red-100 text-red-700' :
-                    task.priority === 'medium' ? 'bg-orange-100 text-orange-700' : 
-                    'bg-green-100 text-green-700'
-                  }`}>
-                    {task.priority}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <CheckSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No tasks yet</p>
-              </div>
-            )}
-          </div>
+      {/* Combined Today's Focus Section */}
+      <div className="apple-card p-8 space-section-sm">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-subtitle">Today's Focus</h2>
+          <button className="btn-secondary px-4 py-3 min-h-[44px]">
+            View All Tasks
+          </button>
         </div>
-
-        {/* Upcoming Deadlines */}
-        <div className="apple-card p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-subtitle">Upcoming Deadlines</h2>
-            <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
-              View Calendar
-            </button>
-          </div>
-          <div className="space-y-4">
-            {upcomingDeadlines.length > 0 ? (
-              upcomingDeadlines.map(task => {
-                const daysUntilDue = Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24));
+        
+        {/* Priority Items */}
+        <div className="space-y-6">
+          {(() => {
+            const overdueItems = upcomingDeadlines.filter(task => {
+              const daysUntilDue = Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24));
+              return daysUntilDue <= 0;
+            });
+            
+            const dueSoonItems = upcomingDeadlines.filter(task => {
+              const daysUntilDue = Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24));
+              return daysUntilDue > 0 && daysUntilDue <= 2;
+            });
+            
+            const inProgressItems = recentTasks.filter(task => task.status === 'in_progress').slice(0, 3);
+            
+            const allPriorityItems = [...overdueItems, ...dueSoonItems, ...inProgressItems].slice(0, 5);
+            
+            return allPriorityItems.length > 0 ? (
+              allPriorityItems.map(task => {
+                const isDeadlineTask = task.dueDate;
+                const daysUntilDue = isDeadlineTask ? Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24)) : null;
+                
                 return (
-                  <div key={task.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                    <Calendar className="w-6 h-6 text-gray-400" />
+                  <div key={task.id} className="flex items-center space-x-4 p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200 min-h-[60px]">
+                    {isDeadlineTask ? (
+                      <Calendar className="w-6 h-6 text-gray-500 flex-shrink-0" />
+                    ) : (
+                      <div className={`w-5 h-5 rounded-full flex-shrink-0 ${
+                        task.status === 'done' ? 'bg-green-500' :
+                        task.status === 'in_progress' ? 'bg-blue-500' : 'bg-gray-400'
+                      }`} />
+                    )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 text-sm leading-5">{task.title}</h3>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {daysUntilDue <= 0 ? 'Overdue' : 
-                         daysUntilDue === 1 ? 'Due tomorrow' : 
-                         `Due in ${daysUntilDue} days`}
+                      <h3 className="font-medium text-gray-900 text-base leading-6 mb-1">{task.title}</h3>
+                      <p className="text-sm text-gray-500">
+                        {isDeadlineTask ? (
+                          daysUntilDue <= 0 ? 'Overdue' : 
+                          daysUntilDue === 1 ? 'Due tomorrow' : 
+                          `Due in ${daysUntilDue} days`
+                        ) : (
+                          task.assignee && teamMembers.find(m => m.id === task.assignee)?.name || 'In Progress'
+                        )}
                       </p>
                     </div>
-                    <div className={`w-3 h-3 rounded-full ${
-                      daysUntilDue <= 0 ? 'bg-red-500' :
-                      daysUntilDue <= 2 ? 'bg-orange-500' : 'bg-green-500'
-                    }`} />
+                    <div className="flex items-center space-x-3">
+                      {task.priority && (
+                        <span className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
+                          task.priority === 'high' ? 'bg-red-100 text-red-700' :
+                          task.priority === 'medium' ? 'bg-orange-100 text-orange-700' : 
+                          'bg-green-100 text-green-700'
+                        }`}>
+                          {task.priority}
+                        </span>
+                      )}
+                      {isDeadlineTask && (
+                        <div className={`w-4 h-4 rounded-full ${
+                          daysUntilDue <= 0 ? 'bg-red-500' :
+                          daysUntilDue <= 2 ? 'bg-orange-500' : 'bg-green-500'
+                        }`} />
+                      )}
+                    </div>
                   </div>
                 );
               })
             ) : (
-              <div className="text-center py-12">
-                <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No upcoming deadlines</p>
+              <div className="text-center py-16">
+                <CheckSquare className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">All caught up!</h3>
+                <p className="text-gray-500 max-w-sm mx-auto">No urgent tasks or deadlines. Great job staying on top of things!</p>
               </div>
-            )}
-          </div>
+            );
+          })()}
         </div>
       </div>
 
-      {/* Inbox Preview */}
+      {/* Inbox Preview - Only show if items exist */}
       {inboxItems.length > 0 && (
-        <div className="apple-card p-8 mt-12">
+        <div className="apple-card p-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-subtitle">Inbox ({inboxItems.length})</h2>
-            <button className="text-blue-600 text-sm font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
+            <button className="btn-secondary px-4 py-3 min-h-[44px]">
               Process All
             </button>
           </div>
           <div className="space-y-4">
             {inboxItems.slice(0, 3).map(item => (
-              <div key={item.id} className="flex items-center space-x-4 p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors duration-200">
-                <div className="w-3 h-3 bg-blue-500 rounded-full" />
+              <div key={item.id} className="flex items-center space-x-4 p-5 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors duration-200 min-h-[60px]">
+                <div className="w-4 h-4 bg-blue-500 rounded-full flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-900 leading-5">{item.content}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {new Date(item.createdAt).toLocaleDateString()}
+                  <p className="text-base text-gray-900 leading-6 mb-1">{item.content}</p>
+                  <p className="text-sm text-gray-500">
+                    Added {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <button className="text-blue-600 text-xs font-medium hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
+                <button className="btn-primary-enhanced px-4 py-2 text-sm min-h-[44px]">
                   Process
                 </button>
               </div>
