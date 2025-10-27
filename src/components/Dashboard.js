@@ -37,18 +37,18 @@ const Dashboard = () => {
     .slice(0, 4);
 
   const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
-    <div className="apple-card p-8">
-      <div className="text-center">
-        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 ${color}`}>
-          <Icon className="w-10 h-10 text-white" />
+    <div className="apple-card">
+      <div className="text-center p-8">
+        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 ${color}`}>
+          <Icon className="w-8 h-8 text-white" />
         </div>
-        <p className="text-base font-medium text-gray-600 mb-3">{title}</p>
-        <h3 className="text-4xl font-bold text-gray-900 mb-3">{value}</h3>
-        {subtitle && <p className="text-sm text-gray-500 mb-2">{subtitle}</p>}
+        <p className="text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">{title}</p>
+        <h3 className="text-3xl font-bold text-gray-900 mb-2">{value}</h3>
+        {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
         {trend && (
-          <div className="flex items-center justify-center space-x-2 text-green-600">
-            <TrendingUp className="w-5 h-5" />
-            <span className="text-sm font-medium">{trend}</span>
+          <div className="flex items-center justify-center space-x-1 text-green-600 mt-3">
+            <TrendingUp className="w-4 h-4" />
+            <span className="text-xs font-medium">{trend}</span>
           </div>
         )}
       </div>
@@ -58,10 +58,10 @@ const Dashboard = () => {
   const QuickActionButton = ({ icon: Icon, label, onClick, color = "bg-blue-500" }) => (
     <button 
       onClick={onClick}
-      className={`${color} text-white rounded-xl p-6 flex flex-col items-center space-y-3 hover:transform hover:scale-105 transition-all duration-200 shadow-lg min-h-[120px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+      className={`${color} text-white rounded-2xl p-8 flex flex-col items-center space-y-4 hover:transform hover:scale-105 transition-all duration-200 shadow-md min-h-[140px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
     >
-      <Icon className="w-8 h-8" />
-      <span className="text-sm font-medium text-center leading-tight">{label}</span>
+      <Icon className="w-10 h-10" />
+      <span className="text-base font-medium text-center leading-tight">{label}</span>
     </button>
   );
 
@@ -73,8 +73,8 @@ const Dashboard = () => {
         <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Track your productivity and team performance at a glance</p>
       </div>
 
-      {/* Essential Metrics - Reduced from 4 to 3 */}
-      <div className="grid grid-cols-1 md:grid-cols-3 grid-gap-lg space-section-sm">
+      {/* Essential Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 space-section-sm">
         <StatCard
           title="Active Tasks"
           value={taskStats.inProgress}
@@ -99,10 +99,11 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Quick Actions - Reduced to 3 primary actions */}
-      <div className="apple-card p-8 space-section-sm">
-        <h2 className="text-subtitle text-center mb-8">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
+      {/* Quick Actions */}
+      <div className="apple-card space-section-sm">
+        <div className="p-8">
+          <h2 className="text-subtitle text-center mb-10">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
           <QuickActionButton
             icon={Plus}
             label="New Task"
@@ -118,17 +119,19 @@ const Dashboard = () => {
             label="Team Chat"
             color="bg-green-500"
           />
+          </div>
         </div>
       </div>
 
-      {/* Combined Today's Focus Section */}
-      <div className="apple-card p-8 space-section-sm">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-subtitle">Today's Focus</h2>
-          <button className="btn-secondary px-4 py-3 min-h-[44px]">
-            View All Tasks
-          </button>
-        </div>
+      {/* Today's Focus Section */}
+      <div className="apple-card space-section-sm">
+        <div className="p-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-subtitle">Today's Focus</h2>
+            <button className="btn-secondary px-6 py-3 min-h-[44px] text-sm font-medium">
+              View All Tasks
+            </button>
+          </div>
         
         {/* Priority Items */}
         <div className="space-y-6">
@@ -153,7 +156,7 @@ const Dashboard = () => {
                 const daysUntilDue = isDeadlineTask ? Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24)) : null;
                 
                 return (
-                  <div key={task.id} className="flex items-center space-x-4 p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200 min-h-[60px]">
+                  <div key={task.id} className="flex items-center space-x-4 p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 min-h-[72px]">
                     {isDeadlineTask ? (
                       <Calendar className="w-6 h-6 text-gray-500 flex-shrink-0" />
                     ) : (
@@ -163,7 +166,7 @@ const Dashboard = () => {
                       }`} />
                     )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 text-base leading-6 mb-1">{task.title}</h3>
+                      <h3 className="font-semibold text-gray-900 text-base leading-6 mb-1">{task.title}</h3>
                       <p className="text-sm text-gray-500">
                         {isDeadlineTask ? (
                           daysUntilDue <= 0 ? 'Overdue' : 
@@ -195,40 +198,43 @@ const Dashboard = () => {
                 );
               })
             ) : (
-              <div className="text-center py-16">
-                <CheckSquare className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">All caught up!</h3>
-                <p className="text-gray-500 max-w-sm mx-auto">No urgent tasks or deadlines. Great job staying on top of things!</p>
+              <div className="text-center py-20">
+                <CheckSquare className="w-24 h-24 text-gray-300 mx-auto mb-6" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">All caught up!</h3>
+                <p className="text-gray-500 max-w-md mx-auto text-base leading-relaxed">No urgent tasks or deadlines. Great job staying on top of things!</p>
               </div>
             );
           })()}
+        </div>
         </div>
       </div>
 
       {/* Inbox Preview - Only show if items exist */}
       {inboxItems.length > 0 && (
-        <div className="apple-card p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-subtitle">Inbox ({inboxItems.length})</h2>
-            <button className="btn-secondary px-4 py-3 min-h-[44px]">
-              Process All
-            </button>
-          </div>
-          <div className="space-y-4">
-            {inboxItems.slice(0, 3).map(item => (
-              <div key={item.id} className="flex items-center space-x-4 p-5 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors duration-200 min-h-[60px]">
-                <div className="w-4 h-4 bg-blue-500 rounded-full flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-base text-gray-900 leading-6 mb-1">{item.content}</p>
-                  <p className="text-sm text-gray-500">
-                    Added {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
+        <div className="apple-card">
+          <div className="p-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-subtitle">Inbox ({inboxItems.length})</h2>
+              <button className="btn-secondary px-6 py-3 min-h-[44px] text-sm font-medium">
+                Process All
+              </button>
+            </div>
+            <div className="space-y-4">
+              {inboxItems.slice(0, 3).map(item => (
+                <div key={item.id} className="flex items-center space-x-4 p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-200 min-h-[72px]">
+                  <div className="w-5 h-5 bg-blue-500 rounded-full flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-base font-semibold text-gray-900 leading-6 mb-1">{item.content}</p>
+                    <p className="text-sm text-gray-500">
+                      Added {new Date(item.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button className="btn-primary px-6 py-3 text-sm font-medium min-h-[44px]">
+                    Process
+                  </button>
                 </div>
-                <button className="btn-primary-enhanced px-4 py-2 text-sm min-h-[44px]">
-                  Process
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
