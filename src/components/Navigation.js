@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useView } from '../contexts/ViewContext';
 import { 
+  LayoutDashboard,
   Inbox, 
   Layers,
   CheckSquare2,
@@ -17,6 +18,13 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const navigationItems = [
+    {
+      id: 'dashboard',
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: LayoutDashboard,
+      description: 'Overview and metrics'
+    },
     {
       id: 'inbox',
       name: 'Inbox',

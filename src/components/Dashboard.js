@@ -1,7 +1,5 @@
 import React from 'react';
 import { useTask } from '../contexts/TaskContext';
-import { useTicket } from '../contexts/TicketContext';
-import { useChat } from '../contexts/ChatContext';
 import { 
   CheckSquare, 
   Clock, 
@@ -15,10 +13,6 @@ import {
 
 const Dashboard = () => {
   const { tasks, inboxItems, teamMembers } = useTask();
-  const { getTicketStats } = useTicket();
-  const { channels, messages } = useChat();
-
-  const ticketStats = getTicketStats();
   
   const taskStats = {
     total: tasks.length,
@@ -66,15 +60,15 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="container-padding-lg max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
       {/* Header */}
-      <div className="text-center space-section">
-        <h1 className="text-title mb-4">Dashboard</h1>
-        <p className="text-body text-lg max-w-xl mx-auto leading-relaxed">Track your productivity and team performance</p>
+      <div className="text-center mb-16">
+        <h1 className="text-4xl font-bold text-gray-900 mb-6">Dashboard</h1>
+        <p className="text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">Track your productivity and team performance</p>
       </div>
 
       {/* Essential Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 space-section-sm">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <StatCard
           title="Active Tasks"
           value={taskStats.inProgress}
@@ -100,7 +94,7 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="apple-card p-6 space-section-sm">
+      <div className="apple-card p-8 mb-12">
         <h2 className="text-subtitle text-center mb-6">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
           <QuickActionButton
@@ -122,7 +116,7 @@ const Dashboard = () => {
       </div>
 
       {/* Today's Focus Section */}
-      <div className="apple-card p-6 space-section-sm">
+      <div className="apple-card p-8 mb-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-subtitle">Today's Focus</h2>
           <button className="btn-secondary px-4 py-2 text-sm font-medium">
@@ -207,7 +201,7 @@ const Dashboard = () => {
 
       {/* Inbox Preview - Only show if items exist */}
       {inboxItems.length > 0 && (
-        <div className="apple-card p-6">
+        <div className="apple-card p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-subtitle">Inbox ({inboxItems.length})</h2>
             <button className="btn-secondary px-4 py-2 text-sm font-medium">

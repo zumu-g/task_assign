@@ -4,6 +4,7 @@ import { TaskProvider } from './contexts/TaskContext';
 import { InboxProvider } from './contexts/InboxContext';
 import { ViewProvider } from './contexts/ViewContext';
 import Navigation from './components/Navigation';
+import Dashboard from './components/Dashboard';
 import Inbox from './components/Inbox';
 import Canvas from './components/Canvas';
 import TaskManager from './components/TaskManager';
@@ -50,9 +51,10 @@ function App() {
             <div className="min-h-screen bg-white">
               <Router>
                 <Navigation />
-                <main className="pt-12 pb-24">
+                <main className="pt-20 pb-24">
                   <Routes>
-                    <Route path="/" element={<Navigate to="/inbox" replace />} />
+                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/inbox" element={<Inbox />} />
                     <Route path="/canvas" element={<Canvas />} />
                     <Route path="/tasks" element={<TaskManager />} />
